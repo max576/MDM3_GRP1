@@ -1,4 +1,4 @@
-from_code,to_code,count,FlightDistance,FlightTime,DirectFlights
+from_code,to_code,count,flightdistance,flighttime,airline
 ABE,ATL,853,"692 miles / 1114 km","1 hour, 44 minutes",<undefined>
 ABE,BHM,1,"792 miles / 1275 km","2 hours, 5 minutes",<undefined>
 ABE,CLE,805,"339 miles / 545 km","1 hour, 11 minutes",<undefined>
