@@ -38,7 +38,7 @@ for i = 1:height(route_data)
         distance = distance*1000 + sscanf(char(flightdistances(i)), strcat(string(distance), ",%d"));
     end
     count = route_data.count(i);
-    carbon = func_carbon_routes(distance, count, carbonrate, carbontakeoff, carbonlanding)
+    carbon = func_carbon_routes(distance, count, carbonrate, carbontakeoff, carbonlanding);
     route_distances(i) = distance;
     route_counts(i) = count;
     route_graph(route_pairs(i, 1), route_pairs(i, 2), :) = [distance, count, carbon, 0];
@@ -72,5 +72,13 @@ end
 km_to_nmi = 0.539957;
 route_graph(:, :, 1) = route_graph(:, :, 1)*km_to_nmi;
 
-%ATL carbon test
-func_carbon_port(1, route_graph)
+% %Carbon calc test
+% i = findroute(1, 2, route_pairs);
+% j = findroute(2, 1, route_pairs);
+% func_carbon_routes(route_distances(i), route_counts(i), carbonrate, carbontakeoff, carbonlanding) + func_carbon_routes(route_distances(j), route_counts(j), carbonrate, carbontakeoff, carbonlanding)
+% 
+% %ATL carbon test
+% func_carbon_port(1, route_graph)
+% route_graph(1, 2, 4) = 1;
+% route_graph(2, 1, 4) = 1;
+% func_carbon_port(1, route_graph)
