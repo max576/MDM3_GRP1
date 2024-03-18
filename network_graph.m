@@ -72,6 +72,13 @@ end
 km_to_nmi = 0.539957;
 route_graph(:, :, 1) = route_graph(:, :, 1)*km_to_nmi;
 
+%Centrality list - [port number, centrality]
+portcarbon = zeros(303, 2);
+for i = 1:303
+    portcarbon(i, 2) = func_carbon_port(i, route_graph);
+    portcarbon(i, 1) = i;
+end
+
 % %Carbon calc test
 % i = findroute(1, 2, route_pairs);
 % j = findroute(2, 1, route_pairs);
