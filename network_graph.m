@@ -79,6 +79,12 @@ for i = 1:303
     portcarbon(i, 1) = i;
 end
 
+
+%Exporting the route carbon and route distance
+writematrix(route_graph(:, :, 1), 'route_distance');
+writematrix(route_graph(:, :, 2), 'route_frequency');
+writematrix(route_graph(:, :, 3), 'route_carbon');
+
 % %Carbon calc test
 % i = findroute(1, 2, route_pairs);
 % j = findroute(2, 1, route_pairs);
