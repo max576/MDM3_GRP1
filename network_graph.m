@@ -2,9 +2,9 @@ clear all
 
 %Set as mass of carbon per nmi per flight and carbon total per takeoff and
 %landing per flight
-carbonrate = 1;
-carbontakeoff = 0;
-carbonlanding = 0;
+carbonrate = 17.05;
+carbontakeoff = 1000;
+carbonlanding = 500;
 
 %Importing airport data
 portdata = readtable("first_network.csv");
