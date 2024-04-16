@@ -1,17 +1,23 @@
 clear all
 
 %Creating the variables
-switch_num = 5; % 0<x<152
+loop_num = 5;
+switch_num = 1; % 0<x<152
 gen_size = 50; % 2<x
 gen_num = 50;
-hydroports_list = [2, 3];
+hydroports_list = [];
+airports_converted = [];
 changenum = max(2.*ceil(gen_size/20), 2);
 route_graph = zeros(303, 303, 4);
 route_graph(:, :, 1) = readmatrix('route_distance.txt');
 route_graph(:, :, 2) = readmatrix('route_frequency.txt');
 route_graph(:, :, 3) = readmatrix('route_carbon.txt');
 
+%Looping the genetic algorithm
+for loop = 1:loop_num
+
 %Creating unshuffled solutions
+hydroports_list = [hydroports_list, airports_converted]
 initial_hydroports = zeros(303, 1);
 initial_hydroports(hydroports_list) = 2;
 unshuffled = initial_hydroports;
@@ -126,3 +132,5 @@ validity_check = sum(sum(generation, 2) - (2*length(hydroports_list) + switch_nu
 airports_converted = find(generation(1, :) == 1)
 total_saving = eval(1)
 percent_saving = 100*eval(1)/init_eval
+end
+hydroports_list = [hydroports_list, airports_converted]
