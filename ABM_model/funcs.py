@@ -45,16 +45,20 @@ def generate_graph(routes, airport_labels, carbon, frequency, distance):
     
     for airport in airport_labels:
         
-        num_flights = frequency.loc[airport].sum()
-        G.add_node(airport, freq=num_flights)
-        # should also add a node attribute for the hydrogen status of the airport
+        num_flights = frequency.loc[airport].sum() # change this to be the sum of the row and column
+        num_flights += frequency.loc[:, airport].sum()
         
-    # G.add_nodes_from(airport_labels)
-    # print(G.nodes)
+        
+        G.add_node(airport, freq=num_flights)
+        # should also add a node attribute for the hydrogen status of the airport (potentially not needed)
+        
+
     # add edges for each possible route
+    # so set the has_travelled attribute to 1 for each edge.
     for route in routes:
         source, destination = route
-        G.add_edge(source, destination, dist=distance.loc[source][destination])
+        # change how the carbon attribute is defined - just copy the 2 lines used for num_flights, but change frequency to carbon
+        G.add_edge(source, destination, dist=distance.loc[source][destination], carbon=carbon.loc[source][destination], visited=1)
     
     # draw graph
     # nx.draw(G, pos=nx.spectral_layout(G), with_labels=True, font_weight='bold')
@@ -91,6 +95,7 @@ class Aircraft():
     """Generates the aircraft object"""
     def __init__(self, aircraft_id, start_node, aircraft_range):
         self.aircraft_id = aircraft_id # id of the aircraft
+        self.start_node = start_node
         self.current_node = start_node # origin
         self.airport_list = [self.current_node] # list of airports
         self.active = True # whether the aircraft is active or not

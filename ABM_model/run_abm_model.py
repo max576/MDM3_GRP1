@@ -16,7 +16,8 @@ aircraft_list = [] # list of aircraft objects
 # generate the aircraft objects at hydrogen airports
 for i in range(population_num):
     test_range = 2000
-    aircraft_list.append(Aircraft(i, np.random.choice([n for n in G.nodes]), test_range))
+    # aircraft_list.append(Aircraft(i, np.random.choice([n for n in G.nodes]), test_range))
+    aircraft_list.append(Aircraft(i, 'ATL', test_range))
     # aircraft_list.append(Aircraft(i, np.random.choice([n for n in G.nodes if G.nodes[n]['hydrogen'] == 1]), test_range))
 
 
@@ -33,7 +34,6 @@ def update():
         for aircraft in aircraft_list:
             if aircraft.active:
                 # gets the weights of each neighbour of the current node
-                # neighbour_weights = [nx.get_node_attributes(G, 'node_weight')[n] for n in G.neighbors(aircraft.current_node)]
                 neighbour_weights = [nx.get_node_attributes(G, 'freq')[n] for n in G.neighbors(aircraft.current_node)]
                 
                 # print(neighbour_weights)
@@ -41,11 +41,26 @@ def update():
                 # normalise the weights to sum to 1 (could interpret as a probability)
                 normalized_weights = neighbour_weights/np.sum(neighbour_weights)
                 normalized_weights = np.reshape(normalized_weights, (normalized_weights.shape[0]))
-  
+
+                shortest_paths_list = []
+
+                neighbours = list(G.neighbors(aircraft.current_node))
+
+                # get the shortest path between the potential neighbour nodes and the origin node
+                for n in neighbours:
+                    shortest_path = nx.shortest_path_length(G, source=n, target=aircraft.airport_list[0], weight='dist')
+                    # add distance from current node to neighbour node
+                    shortest_path += G.get_edge_data(aircraft.current_node, n)['dist']
+                    shortest_paths_list.append(shortest_path)
+            
+                
                 # if range - edge weight < 0, remove it from possible choices
                 for i, n in enumerate(list(G.neighbors(aircraft.current_node))):
                     # if G.get_edge_data(aircraft.current_node, n)['edge_weight'] > aircraft.current_range:
                     if G.get_edge_data(aircraft.current_node, n)['dist'] > aircraft.current_range:
+                        normalized_weights[i] = 0
+                    # if shortest path to get to neighbour and back to origin is greater than the range, remove it from possible choices
+                    if shortest_paths_list[i] > aircraft.current_range:
                         normalized_weights[i] = 0
                 
                 # if all weights are 0, break
@@ -58,10 +73,9 @@ def update():
                 normalized_weights = normalized_weights/np.sum(normalized_weights)
                
                 # get the next node based on a weighted random choice of the neighbours
-                next_node = np.random.choice(list(G.neighbors(aircraft.current_node)), p=normalized_weights)
+                next_node = np.random.choice(list(G.neighbors(aircraft.current_node)), p=normalized_weights) # just remove p=normalized_weights to get a uniform random choice
 
                 # get the edge weight between the current node and the next node
-                # edge_weight = G.get_edge_data(aircraft.current_node, next_node)['edge_weight']
                 edge_weight = G.get_edge_data(aircraft.current_node, next_node)['dist']
                 aircraft.current_range -= edge_weight
                 
