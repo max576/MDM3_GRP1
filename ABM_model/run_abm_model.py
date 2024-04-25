@@ -125,6 +125,13 @@ plt.show()
 total_carbon = sum(aircraft.carbon_emissions for aircraft in aircraft_list)
 print(f'Total carbon emissions for all aircraft: {total_carbon}')
 
+# Carbon emissions from the entire network
+total_network_carbon = sum(sum(values.values()) for values in carbon_dict.values())
+
+# Percentage carbon covered by the aircraft (will indicate saving upon hydrogen switch)
+carbon_percentage = (total_carbon / total_network_carbon) * 100
+print(f"Carbon emissions by the aircraft are {carbon_percentage:.2f}% of the total potential network emissions.")
+
 # Load carbon emissions data
 #route_carbon = np.genfromtxt("route_carbon_updated.csv", delimiter=",", filling_values=0)
 
