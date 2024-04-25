@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import networkx as nx
 from funcs import generate_arbitrary_graph, generate_graph, Aircraft, data_preprocessing
 
@@ -20,9 +21,20 @@ for i in range(population_num):
     aircraft_list.append(Aircraft(i, 'ATL', test_range))
     # aircraft_list.append(Aircraft(i, np.random.choice([n for n in G.nodes if G.nodes[n]['hydrogen'] == 1]), test_range))
 
-
 # number of timesteps (number of journeys each aircraft will make)
 num_iterations = 100
+
+# Initialize a matrix to represent visited edges
+visited_edges = np.zeros((len(G.nodes), len(G.nodes)))
+
+# Create a mapping from airport labels to integer indices
+airport_indices = {label: idx for idx, label in enumerate(G.nodes)}
+
+#load carbon emissions data
+carbon_matrix = pd.read_csv('route_carbon_updated.csv')
+# Convert the DataFrame to a dictionary of dictionaries for easier access
+carbon_dict = carbon_matrix.set_index('Unnamed: 0').T.to_dict('index')
+
 
 # update function
 def update():
@@ -32,6 +44,7 @@ def update():
     # for each iteration, get next airport for each aircraft
     for _ in range(num_iterations):
         for aircraft in aircraft_list:
+            start_node_index = aircraft.airport_list[0]
             if aircraft.active:
                 # gets the weights of each neighbour of the current node
                 neighbour_weights = [nx.get_node_attributes(G, 'freq')[n] for n in G.neighbors(aircraft.current_node)]
@@ -79,10 +92,19 @@ def update():
                 edge_weight = G.get_edge_data(aircraft.current_node, next_node)['dist']
                 aircraft.current_range -= edge_weight
                 
+                # Add the carbon emissions for the current edge to the aircraft's total
+                aircraft.carbon_emissions += carbon_dict[aircraft.current_node][next_node]
+
+                
                 # append airport to the aircraft's list of airports
                 aircraft.airport_list.append(next_node)
                 # set the current node to the next node
                 aircraft.current_node = next_node
+                
+                # Convert airport labels to integer indices
+                current_node_index = airport_indices[aircraft.current_node]
+                next_node_index = airport_indices[next_node]
+             
                 
                 # if aircraft reaches a hydrogen airport, refuel
                 # if G.nodes[next_node]['hydrogen'] == 1:
@@ -92,11 +114,32 @@ def update():
                 if aircraft.current_node == aircraft.airport_list[0]:
                     aircraft.active = False
                     print(f'Aircraft {aircraft.aircraft_id} has completed its journey')
+                    print(f'Aircraft {aircraft.aircraft_id} has returned with range:', aircraft.current_range) #how much range the plane returns with
                     break
-
 
 update()
 for i in range(len(aircraft_list)):
     print(f'aircraft{i}', aircraft_list[i].airport_list)
 plt.show()
+
+total_carbon = sum(aircraft.carbon_emissions for aircraft in aircraft_list)
+print(f'Total carbon emissions for all aircraft: {total_carbon}')
+
+# Load carbon emissions data
+#route_carbon = np.genfromtxt("route_carbon_updated.csv", delimiter=",", filling_values=0)
+
+# Set the first column as the index to facilitate summing
+#route_carbon.set_index('Unnamed: 0', inplace=True)
+
+# Compute the undirected graph by summing emissions in both directions
+#undirected_carbon = route_carbon + route_carbon.transpose()
+
+# Since the above operation doubles the diagonal (self-loops which should actually be zero), we set the diagonal to zero
+#np.fill_diagonal(undirected_carbon.values, 0)
+
+#export to csv
+#undirected_carbon.to_csv('undirected_route_carbon.csv')
+
+#total_carbon_emission = np.sum(visited_edges * undirected_carbon)
+
         
