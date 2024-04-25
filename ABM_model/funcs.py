@@ -101,5 +101,7 @@ class Aircraft():
         self.active = True # whether the aircraft is active or not
         self.range = aircraft_range # range of the aircraft
         self.current_range = aircraft_range # current range of the aircraft
+        self.carbon_emissions = 0  # Initialize carbon emissions tracking
+
 
 
