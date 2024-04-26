@@ -11,16 +11,14 @@ routes, airport_labels, carbon, frequency, distance = data_preprocessing()
 G = generate_graph(routes, airport_labels, carbon, frequency, distance)
 
 
-population_num = 100 # number of aircraft
+population_num = 50 # number of aircraft
 aircraft_list = [] # list of aircraft objects
-
+hydrogen_aiports = ['ATL', 'ORD', 'PHX', 'DEN']
 # generate the aircraft objects at hydrogen airports
 for i in range(population_num):
     test_range = 2000
-    # aircraft_list.append(Aircraft(i, np.random.choice([n for n in G.nodes]), test_range))
-    aircraft_list.append(Aircraft(i, 'ATL', test_range))
-    # aircraft_list.append(Aircraft(i, np.random.choice([n for n in G.nodes if G.nodes[n]['hydrogen'] == 1]), test_range))
-
+    aircraft_list.append(Aircraft(i, np.random.choice(hydrogen_aiports), test_range))
+   
 # number of timesteps (number of journeys each aircraft will make)
 num_iterations = 100
 
@@ -62,16 +60,20 @@ def update():
                 # get the shortest path between the potential neighbour nodes and the origin node
                 for n in neighbours:
                     # so need to loop through this for each hydrogen airport
-                    shortest_path = nx.shortest_path_length(G, source=n, target=aircraft.airport_list[0], weight='dist')
-                    # add distance from current node to neighbour node
-                    shortest_path += G.get_edge_data(aircraft.current_node, n)['dist']
-                    shortest_paths_list.append(shortest_path)
-            
+                    intermediate_list = []
+                    for i in range(len(hydrogen_aiports)):
+                        shortest_path = nx.shortest_path_length(G, source=n, target=hydrogen_aiports[i], weight='dist')
+                        # add distance from current node to neighbour node
+                        shortest_path += G.get_edge_data(aircraft.current_node, n)['dist']
+                        intermediate_list.append(shortest_path)
+                    intermediate_arr = np.array(intermediate_list)
+                    shortest_paths_list.append(np.min(intermediate_arr))
                 
+            
                 # if range - edge weight < 0, remove it from possible choices
-                for i, n in enumerate(list(G.neighbors(aircraft.current_node))):
+                for i, k in enumerate(list(G.neighbors(aircraft.current_node))):
                     # if G.get_edge_data(aircraft.current_node, n)['edge_weight'] > aircraft.current_range:
-                    if G.get_edge_data(aircraft.current_node, n)['dist'] > aircraft.current_range:
+                    if G.get_edge_data(aircraft.current_node, k)['dist'] > aircraft.current_range:
                         normalized_weights[i] = 0
                     # if shortest path to get to neighbour and back to origin is greater than the range, remove it from possible choices
                     if shortest_paths_list[i] > aircraft.current_range:
@@ -94,7 +96,7 @@ def update():
 
                 # normalise the weights again after removing to ensure they sum to 1
                 normalized_weights = normalized_weights/np.sum(normalized_weights)
-               
+                # print(f'{aircraft.aircraft_id}', normalized_weights)
                 # get the next node based on a weighted random choice of the neighbours
                 next_node = np.random.choice(list(G.neighbors(aircraft.current_node)), p=normalized_weights) # just remove p=normalized_weights to get a uniform random choice
 
@@ -105,7 +107,7 @@ def update():
                 # Add the carbon emissions for the current edge to the aircraft's total
                 aircraft.carbon_emissions += carbon_dict[aircraft.current_node][next_node]
                 # do we need to set this to zero after adding it?
-                carbon_dict[aircraft.current_node][next_node] = 0
+                carbon_dict[aircraft.current_node][next_node] = 0 #########
                 
                 
                 # append airport to the aircraft's list of airports
@@ -123,7 +125,7 @@ def update():
                 #     aircraft.current_range = aircraft.range
 
                 # if aircraft reaches the origin airport, set active to False
-                if aircraft.current_node == aircraft.airport_list[0]:
+                if aircraft.current_node in hydrogen_aiports:
                     aircraft.active = False
                     print(f'Aircraft {aircraft.aircraft_id} has completed its journey')
                     print(f'Aircraft {aircraft.aircraft_id} has returned with range:', aircraft.current_range) #how much range the plane returns with
