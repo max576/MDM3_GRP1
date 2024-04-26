@@ -11,7 +11,7 @@ routes, airport_labels, carbon, frequency, distance = data_preprocessing()
 G = generate_graph(routes, airport_labels, carbon, frequency, distance)
 
 
-population_num = 10 # number of aircraft
+population_num = 100 # number of aircraft
 aircraft_list = [] # list of aircraft objects
 
 # generate the aircraft objects at hydrogen airports
@@ -61,6 +61,7 @@ def update():
 
                 # get the shortest path between the potential neighbour nodes and the origin node
                 for n in neighbours:
+                    # so need to loop through this for each hydrogen airport
                     shortest_path = nx.shortest_path_length(G, source=n, target=aircraft.airport_list[0], weight='dist')
                     # add distance from current node to neighbour node
                     shortest_path += G.get_edge_data(aircraft.current_node, n)['dist']
@@ -82,6 +83,15 @@ def update():
                     print(f'Aircraft {aircraft.aircraft_id} has run out of range')
                     break
 
+                # if there is an option to go elsewhere rather than home airport, then go there
+                # check number of nonzero entries in normalised weights
+                for i, n in enumerate(list(G.neighbors(aircraft.current_node))):
+                    if np.count_nonzero(normalized_weights) > 1:
+                        if n == aircraft.start_node:
+                            normalized_weights[i] = 0
+                    # go to a different airport rather than the home airport
+                    
+
                 # normalise the weights again after removing to ensure they sum to 1
                 normalized_weights = normalized_weights/np.sum(normalized_weights)
                
@@ -94,7 +104,9 @@ def update():
                 
                 # Add the carbon emissions for the current edge to the aircraft's total
                 aircraft.carbon_emissions += carbon_dict[aircraft.current_node][next_node]
-
+                # do we need to set this to zero after adding it?
+                carbon_dict[aircraft.current_node][next_node] = 0
+                
                 
                 # append airport to the aircraft's list of airports
                 aircraft.airport_list.append(next_node)

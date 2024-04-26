@@ -40,6 +40,7 @@ def generate_graph(routes, airport_labels, carbon, frequency, distance):
     """Function that generates a graph from a csv file"""
     
     G = nx.Graph()
+    # G = nx.DiGraph() # if using directed graph
 
     # add a node for each airport, with a weight equal to number of flights out
     
@@ -87,6 +88,7 @@ def data_preprocessing():
         for j in range(len(airport_labels)):
             if carbon.iloc[i, j] != 0:
                 routes.append((airport_labels[i], airport_labels[j]))
+                 # routes.append((airport_labels[j], airport_labels[i])) # if using a directed graph add the reverse route
     return routes, airport_labels, carbon, frequency, distance
 
 
