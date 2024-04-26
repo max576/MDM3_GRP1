@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import os
 import networkx as nx
 from funcs import generate_arbitrary_graph, generate_graph, Aircraft, data_preprocessing
 
@@ -11,9 +12,9 @@ routes, airport_labels, carbon, frequency, distance = data_preprocessing()
 G = generate_graph(routes, airport_labels, carbon, frequency, distance)
 
 
-population_num = 50 # number of aircraft
+population_num = 60 # number of aircraft
 aircraft_list = [] # list of aircraft objects
-hydrogen_aiports = ['ATL', 'ORD', 'PHX', 'DEN']
+hydrogen_aiports = ['ATL']
 # generate the aircraft objects at hydrogen airports
 for i in range(population_num):
     test_range = 2000
@@ -28,10 +29,22 @@ visited_edges = np.zeros((len(G.nodes), len(G.nodes)))
 # Create a mapping from airport labels to integer indices
 airport_indices = {label: idx for idx, label in enumerate(G.nodes)}
 
+visit_matrix = pd.DataFrame(0, index=airport_labels, columns=airport_labels)
+
 #load carbon emissions data
 carbon_matrix = pd.read_csv('route_carbon_updated.csv')
 # Convert the DataFrame to a dictionary of dictionaries for easier access
 carbon_dict = carbon_matrix.set_index('Unnamed: 0').T.to_dict('index')
+
+airport_labels = carbon_matrix.columns.tolist()  # Extracts all column headers
+
+# Load or initialise the visit matrix
+file_path = 'visited_routes.csv'
+if os.path.exists(file_path):
+    visit_matrix = pd.read_csv(file_path, index_col=0)
+else:
+    # Assume `airport_labels` is already defined
+    visit_matrix = pd.DataFrame(0, index=airport_labels, columns=airport_labels)
 
 
 # update function
@@ -100,6 +113,9 @@ def update():
                 # get the next node based on a weighted random choice of the neighbours
                 next_node = np.random.choice(list(G.neighbors(aircraft.current_node)), p=normalized_weights) # just remove p=normalized_weights to get a uniform random choice
 
+                # Set the route from current_node to next_node as visited
+                visit_matrix.at[aircraft.current_node, next_node] = 1
+
                 # get the edge weight between the current node and the next node
                 edge_weight = G.get_edge_data(aircraft.current_node, next_node)['dist']
                 aircraft.current_range -= edge_weight
@@ -136,6 +152,23 @@ for i in range(len(aircraft_list)):
     print(f'aircraft{i}', aircraft_list[i].airport_list)
 plt.show()
 
+# Matrix formatting
+if 'Unnamed: 0' in visit_matrix.columns:
+    visit_matrix.drop(columns='Unnamed: 0', inplace=True)
+    
+visit_matrix.drop(index=visit_matrix.index[0], inplace=True)
+
+# Export binary visitation matrix
+visit_matrix.to_csv('visited_routes.csv', header=True)
+
+# Count non-zero entries in the visitation matrix
+visited_route_count = np.count_nonzero(visit_matrix.values)
+
+# Print the number of routes visited
+print(f'Total number of routes visited: {visited_route_count}')
+
+
+# Carbon values calculation (for each run of ABM)
 total_carbon = sum(aircraft.carbon_emissions for aircraft in aircraft_list)
 print(f'Total carbon emissions for all aircraft: {total_carbon}')
 
@@ -145,6 +178,8 @@ total_network_carbon = sum(sum(values.values()) for values in carbon_dict.values
 # Percentage carbon covered by the aircraft (will indicate saving upon hydrogen switch)
 carbon_percentage = (total_carbon / total_network_carbon) * 100
 print(f"Carbon emissions by the aircraft are {carbon_percentage:.2f}% of the total potential network emissions.")
+
+
 
 # Load carbon emissions data
 #route_carbon = np.genfromtxt("route_carbon_updated.csv", delimiter=",", filling_values=0)
@@ -162,5 +197,3 @@ print(f"Carbon emissions by the aircraft are {carbon_percentage:.2f}% of the tot
 #undirected_carbon.to_csv('undirected_route_carbon.csv')
 
 #total_carbon_emission = np.sum(visited_edges * undirected_carbon)
-
-        
