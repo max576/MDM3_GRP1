@@ -181,6 +181,21 @@ network_carbon_emissions = carbon_matrix.sum().sum()
 carbon_percentage = (route_carbon_emissions / network_carbon_emissions) * 100
 print(f"Carbon emissions saved are {carbon_percentage:.2f}% of the total potential network emissions.")
 
+
+
+# calculate visited airports from visit_matrix
+visited_airports = []
+for i in range(len(visit_matrix)):
+    if visit_matrix.iloc[i].sum() > 0:
+        visited_airports.append(visit_matrix.index[i])
+
+print(f'Number of visited airports: {len(visited_airports)}')
+
+
+visited_airports_df = pd.DataFrame(visited_airports, columns=['iata'])
+visited_airports_df.to_csv('abm_airport_list.csv')
+
+
 # Carbon values calculation (for each run of ABM)
 #total_carbon = sum(aircraft.carbon_emissions for aircraft in aircraft_list)
 #print(f'Total carbon emissions for all aircraft: {total_carbon}')
