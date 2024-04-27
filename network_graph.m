@@ -37,6 +37,7 @@ for i = 1:height(route_data)
     if distance < 10
         distance = distance*1000 + sscanf(char(flightdistances(i)), strcat(string(distance), ",%d"));
     end
+    distance = 0.868976*distance;
     count = route_data.count(i);
     carbon = func_carbon_routes(distance, count, carbonrate, carbontakeoff, carbonlanding);
     route_distances(i) = distance;
@@ -69,8 +70,8 @@ for i = 1:303
 end
 
 %Convert distance to nmi
-mi_to_nmi = 0.868976;
-route_graph(:, :, 1) = route_graph(:, :, 1)*mi_to_nmi;
+% mi_to_nmi = 0.868976;
+% route_graph(:, :, 1) = route_graph(:, :, 1)*mi_to_nmi;
 
 %Centrality list - [port number, centrality]
 portcarbon = zeros(303, 2);
