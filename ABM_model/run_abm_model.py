@@ -32,9 +32,10 @@ airport_indices = {label: idx for idx, label in enumerate(G.nodes)}
 visit_matrix = pd.DataFrame(0, index=airport_labels, columns=airport_labels)
 
 #load carbon emissions data
-carbon_matrix = pd.read_csv('route_carbon_updated.csv')
+carbon_matrix = pd.read_csv('route_carbon_updated.csv', index_col=0)
+
 # Convert the DataFrame to a dictionary of dictionaries for easier access
-carbon_dict = carbon_matrix.set_index('Unnamed: 0').T.to_dict('index')
+#carbon_dict = carbon_matrix.set_index('Unnamed: 0').T.to_dict('index')
 
 airport_labels = carbon_matrix.columns.tolist()  # Extracts all column headers
 
@@ -55,7 +56,6 @@ def update():
     # for each iteration, get next airport for each aircraft
     for _ in range(num_iterations):
         for aircraft in aircraft_list:
-            start_node_index = aircraft.airport_list[0]
             if aircraft.active:
                 # gets the weights of each neighbour of the current node
                 neighbour_weights = [nx.get_node_attributes(G, 'freq')[n] for n in G.neighbors(aircraft.current_node)]
@@ -115,15 +115,17 @@ def update():
 
                 # Set the route from current_node to next_node as visited
                 visit_matrix.at[aircraft.current_node, next_node] = 1
+                # make symmetric (if you can travel a route one way, you can also return)
+                visit_matrix.at[next_node, aircraft.current_node] = 1
 
                 # get the edge weight between the current node and the next node
                 edge_weight = G.get_edge_data(aircraft.current_node, next_node)['dist']
                 aircraft.current_range -= edge_weight
                 
                 # Add the carbon emissions for the current edge to the aircraft's total
-                aircraft.carbon_emissions += carbon_dict[aircraft.current_node][next_node]
+                #aircraft.carbon_emissions += carbon_dict[aircraft.current_node][next_node]
                 # do we need to set this to zero after adding it?
-                carbon_dict[aircraft.current_node][next_node] = 0 #########
+                #carbon_dict[aircraft.current_node][next_node] = 0 #########
                 
                 
                 # append airport to the aircraft's list of airports
@@ -152,34 +154,43 @@ for i in range(len(aircraft_list)):
     print(f'aircraft{i}', aircraft_list[i].airport_list)
 plt.show()
 
-# Matrix formatting
-if 'Unnamed: 0' in visit_matrix.columns:
-    visit_matrix.drop(columns='Unnamed: 0', inplace=True)
-    
-visit_matrix.drop(index=visit_matrix.index[0], inplace=True)
-
 # Export binary visitation matrix
 visit_matrix.to_csv('visited_routes.csv', header=True)
 
 # Count non-zero entries in the visitation matrix
-visited_route_count = np.count_nonzero(visit_matrix.values)
+visited_route_count = (np.count_nonzero(visit_matrix.values))
 
-# Print the number of routes visited
+# Print the number of routes visited 
 print(f'Total number of routes visited: {visited_route_count}')
 
+# Calculate the total number of possible routes
+route_count = visit_matrix.size - len(visit_matrix) 
+
+print(f'Total number of routes: {route_count}')
+
+# Calculate emissions only for visited routes
+emission_matrix = visit_matrix * carbon_matrix
+
+# Calculate total carbon emissions
+route_carbon_emissions = emission_matrix.sum().sum()  # sum twice to get the total sum of the DataFrame
+
+# Output the total carbon emissions
+print(f"Total carbon emissions for visited routes: {route_carbon_emissions}")
+
+network_carbon_emissions = carbon_matrix.sum().sum()
+carbon_percentage = (route_carbon_emissions / network_carbon_emissions) * 100
+print(f"Carbon emissions saved are {carbon_percentage:.2f}% of the total potential network emissions.")
 
 # Carbon values calculation (for each run of ABM)
-total_carbon = sum(aircraft.carbon_emissions for aircraft in aircraft_list)
-print(f'Total carbon emissions for all aircraft: {total_carbon}')
+#total_carbon = sum(aircraft.carbon_emissions for aircraft in aircraft_list)
+#print(f'Total carbon emissions for all aircraft: {total_carbon}')
 
 # Carbon emissions from the entire network
-total_network_carbon = sum(sum(values.values()) for values in carbon_dict.values())
+#total_network_carbon = sum(carbon_matrix.values())
 
 # Percentage carbon covered by the aircraft (will indicate saving upon hydrogen switch)
-carbon_percentage = (total_carbon / total_network_carbon) * 100
-print(f"Carbon emissions by the aircraft are {carbon_percentage:.2f}% of the total potential network emissions.")
-
-
+#carbon_percentage = (total_carbon / total_network_carbon) * 100
+#print(f"Carbon emissions by the aircraft are {carbon_percentage:.2f}% of the total potential network emissions.")
 
 # Load carbon emissions data
 #route_carbon = np.genfromtxt("route_carbon_updated.csv", delimiter=",", filling_values=0)
