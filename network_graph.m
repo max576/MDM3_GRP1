@@ -69,8 +69,8 @@ for i = 1:303
 end
 
 %Convert distance to nmi
-km_to_nmi = 0.539957;
-route_graph(:, :, 1) = route_graph(:, :, 1)*km_to_nmi;
+mi_to_nmi = 0.868976;
+route_graph(:, :, 1) = route_graph(:, :, 1)*mi_to_nmi;
 
 %Centrality list - [port number, centrality]
 portcarbon = zeros(303, 2);
