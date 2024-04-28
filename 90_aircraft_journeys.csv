@@ -1,0 +1,91 @@
+Aircraft ID,Journey
+Aircraft 0,ATL -> IAD -> LGA -> CVG -> GRR -> CVG -> SDF -> ATL
+Aircraft 1,ATL -> MOB -> DFW -> ORD -> SBN -> ATL
+Aircraft 2,ATL -> DFW -> ORD -> IND -> CVG -> HSV -> ATL
+Aircraft 3,ATL -> CLE -> CLT -> PHL -> RDU -> CLT -> GSO -> CLT -> ATL
+Aircraft 4,ATL -> ICT -> DTW -> LEX -> ATL
+Aircraft 5,ATL -> DFW -> TPA -> JAX -> ATL
+Aircraft 6,ATL -> CVG -> BOS -> RDU -> CLT -> CHS -> ATL
+Aircraft 7,ATL -> DTW -> SHV -> MEM -> BNA -> BHM -> ATL
+Aircraft 8,ATL -> ORD -> BUF -> MDW -> IND -> CVG -> SDF -> ATL
+Aircraft 9,ATL -> AUS -> TPA -> MCO -> TLH -> ATL
+Aircraft 10,ATL -> DCA -> JFK -> RDU -> BWI -> PHL -> CLT -> AGS -> ATL
+Aircraft 11,ATL -> EWR -> BOS -> CVG -> CLT -> ATL
+Aircraft 12,ATL -> PVD -> PHL -> EWR -> SDF -> ATL
+Aircraft 13,ATL -> RDU -> MDW -> MSP -> ORD -> SDF -> ATL
+Aircraft 14,ATL -> PVD -> BNA -> BHM -> HSV -> BHM -> ATL
+Aircraft 15,ATL -> IAH -> ORD -> IND -> CVG -> TYS -> ATL
+Aircraft 16,ATL -> MEM -> DFW -> ORD -> HSV -> BHM -> ATL
+Aircraft 17,ATL -> CLE -> DAY -> DTW -> BDL -> PHL -> DCA -> ATL
+Aircraft 18,ATL -> RSW -> MDW -> BNA -> ATL
+Aircraft 19,ATL -> PIT -> ORD -> CLE -> CMH -> MEM -> BHM -> ATL
+Aircraft 20,ATL -> MDW -> BDL -> CLT -> AGS -> ATL
+Aircraft 21,ATL -> MSP -> ORD -> MEM -> BNA -> BHM -> ATL
+Aircraft 22,ATL -> BOS -> LGA -> CLT -> BNA -> ATL
+Aircraft 23,ATL -> IAH -> TPA -> BHM -> HSV -> BHM -> ATL
+Aircraft 24,ATL -> CLT -> MDW -> BNA -> DTW -> LEX -> ATL
+Aircraft 25,ATL -> PHL -> DTW -> ORD -> CLE -> SDF -> ATL
+Aircraft 26,ATL -> JFK -> TPA -> MCO -> TLH -> ATL
+Aircraft 27,ATL -> CLE -> BOS -> BWI -> CVG -> LEX -> ATL
+Aircraft 28,ATL -> JFK -> DCA -> CLE -> RDU -> CLT -> CHS -> SAV -> ATL
+Aircraft 29,ATL -> CID -> ORD -> DTW -> PHL -> RDU -> CLT -> ATL
+Aircraft 30,ATL -> BOS -> BWI -> EWR -> DCA -> RDU -> CLT -> ATL
+Aircraft 31,ATL -> PHL -> EWR -> STL -> BNA -> BHM -> HSV -> ATL
+Aircraft 32,ATL -> CLT -> IAH -> DFW -> BNA -> ATL
+Aircraft 33,ATL -> IAD -> ROC -> MCO -> ATL
+Aircraft 34,ATL -> DFW -> CMH -> CLT -> AGS -> ATL
+Aircraft 35,ATL -> FNT -> MSP -> MEM -> BNA -> ATL
+Aircraft 36,ATL -> AVL -> MCO -> CVG -> RDU -> CLT -> AGS -> ATL
+Aircraft 37,ATL -> JFK -> ORD -> MKE -> ORD -> CVG -> TYS -> ATL
+Aircraft 38,ATL -> STL -> AUS -> MEM -> BNA -> BHM -> ATL
+Aircraft 39,ATL -> CAE -> IAH -> DFW -> IAH -> JAN -> ATL
+Aircraft 40,ATL -> MCI -> IND -> DCA -> CLT -> AGS -> ATL
+Aircraft 41,ATL -> DCA -> PHL -> MIA -> MCO -> ATL
+Aircraft 42,ATL -> CLT -> JFK -> BNA -> STL -> BNA -> ATL
+Aircraft 43,ATL -> CLT -> MDT -> CLE -> DTW -> CVG -> STL -> BNA -> BHM -> HSV -> BHM -> ATL
+Aircraft 44,ATL -> ORD -> CHA -> CVG -> RDU -> CLT -> GSO -> CLT -> ATL
+Aircraft 45,ATL -> MSP -> MEM -> TYS -> ATL
+Aircraft 46,ATL -> MSP -> SBN -> ORD -> HSV -> BHM -> HSV -> BHM -> ATL
+Aircraft 47,ATL -> MLU -> DFW -> ORD -> MKE -> IND -> ATL
+Aircraft 48,ATL -> OKC -> MEM -> ORD -> IND -> ATL
+Aircraft 49,ATL -> ORD -> MKE -> LGA -> IAD -> CAE -> ATL
+Aircraft 50,ATL -> IAH -> BNA -> JAX -> ATL
+Aircraft 51,ATL -> DFW -> CLT -> RDU -> CLT -> AGS -> ATL
+Aircraft 52,ATL -> PHL -> CVG -> DTW -> RDU -> CLT -> ATL
+Aircraft 53,ATL -> IND -> IAH -> DAL -> LIT -> MEM -> BHM -> ATL
+Aircraft 54,ATL -> MIA -> MCO -> TLH -> CLT -> IAD -> CLT -> ATL
+Aircraft 55,ATL -> ORD -> IAH -> LFT -> ATL
+Aircraft 56,ATL -> MSY -> BNA -> IAD -> CLE -> TYS -> ATL
+Aircraft 57,ATL -> STL -> CVG -> IAD -> EWR -> DCA -> CLT -> AGS -> ATL
+Aircraft 58,ATL -> MDW -> EWR -> TYS -> ATL
+Aircraft 59,ATL -> IAH -> ORD -> BNA -> ATL
+Aircraft 60,ATL -> PVD -> IAD -> RDU -> CVG -> LEX -> ATL
+Aircraft 61,ATL -> MCO -> IAH -> GRK -> DFW -> BHM -> ATL
+Aircraft 62,ATL -> DFW -> IAH -> MCO -> TPA -> ATL
+Aircraft 63,ATL -> DFW -> TUL -> CVG -> IND -> CVG -> CHA -> ATL
+Aircraft 64,ATL -> BWI -> BUF -> BWI -> RDU -> BWI -> CLT -> AGS -> ATL
+Aircraft 65,ATL -> SAT -> DFW -> IAH -> DFW -> BHM -> ATL
+Aircraft 66,ATL -> TPA -> MCO -> ORD -> DAY -> CVG -> SDF -> ATL
+Aircraft 67,ATL -> MEM -> ORD -> MEM -> GSO -> CLT -> AGS -> ATL
+Aircraft 68,ATL -> JFK -> CLT -> ILM -> CLT -> BHM -> HSV -> ATL
+Aircraft 69,ATL -> DFW -> CLT -> JAX -> ATL
+Aircraft 70,ATL -> SHV -> ORD -> PIT -> CLT -> ATL
+Aircraft 71,ATL -> RDU -> CLT -> ALB -> CLT -> TRI -> CLT -> AGS -> ATL
+Aircraft 72,ATL -> LGA -> PIT -> CLT -> RDU -> BNA -> ATL
+Aircraft 73,ATL -> DFW -> RDU -> CLT -> AGS -> ATL
+Aircraft 74,ATL -> MSP -> TYS -> CVG -> LEX -> ATL
+Aircraft 75,ATL -> ORD -> DFW -> MEM -> HSV -> BHM -> ATL
+Aircraft 76,ATL -> HOU -> STL -> MDW -> BNA -> ATL
+Aircraft 77,ATL -> CRP -> DFW -> AUS -> MSY -> ATL
+Aircraft 78,ATL -> BWI -> DTW -> CLE -> MEM -> JAN -> ATL
+Aircraft 79,ATL -> CVG -> MCI -> DFW -> MSY -> BHM -> ATL
+Aircraft 80,ATL -> DFW -> RDU -> CLT -> AGS -> ATL
+Aircraft 81,ATL -> TPA -> DCA -> CMH -> CLE -> CVG -> SDF -> ATL
+Aircraft 82,ATL -> CLT -> DFW -> STL -> BHM -> ATL
+Aircraft 83,ATL -> TUL -> IAH -> CLT -> AGS -> ATL
+Aircraft 84,ATL -> ICT -> MEM -> LEX -> MEM -> HSV -> ATL
+Aircraft 85,ATL -> PIT -> ORD -> PHL -> DCA -> CLT -> ATL
+Aircraft 86,ATL -> BUF -> CLT -> PIT -> CVG -> SDF -> ATL
+Aircraft 87,ATL -> DFW -> PIA -> ORD -> CVG -> GSP -> ATL
+Aircraft 88,ATL -> IAH -> DSM -> ATL
+Aircraft 89,ATL -> TPA -> MCI -> BNA -> BHM -> ATL
