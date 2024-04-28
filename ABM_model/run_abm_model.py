@@ -159,6 +159,20 @@ while route_diff > 10:
         print(f'aircraft{i}', aircraft_list[i].airport_list)
     plt.show()
 
+    # Dictionary to hold aircraft journey data
+    journey_data = {'Aircraft ID': [], 'Journey': []}
+
+    # Collect data from each aircraft
+    for i, aircraft in enumerate(aircraft_list):
+        journey_data['Aircraft ID'].append(f'Aircraft {i}')
+        journey_data['Journey'].append(' -> '.join(aircraft.airport_list))  # Concatenate journey into a single string
+
+    # Convert the dictionary to a DataFrame
+    df_journeys = pd.DataFrame(journey_data)
+
+    # Export the DataFrame to a CSV file
+    df_journeys.to_csv('aircraft_journeys.csv', index=False)
+
     # Export binary visitation matrix
     visit_matrix.to_csv('visited_routes.csv', header=True)
 
