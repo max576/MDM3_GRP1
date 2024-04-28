@@ -1,0 +1,21 @@
+Aircraft ID,Journey
+Aircraft 0,ATL -> TPA -> DFW -> OKC -> MEM -> BHM -> ATL
+Aircraft 1,ATL -> DTW -> BWI -> PHL -> EWR -> BNA -> BHM -> ATL
+Aircraft 2,ATL -> ATW -> ORD -> VPS -> ATL
+Aircraft 3,ATL -> MSP -> LSE -> ORD -> CLT -> SAV -> ATL
+Aircraft 4,ATL -> EWR -> SYR -> ORD -> BNA -> BHM -> ATL
+Aircraft 5,ATL -> CMH -> CVG -> CLE -> DTW -> CLT -> MEM -> BHM -> ATL
+Aircraft 6,ATL -> TUL -> STL -> DTW -> MDW -> IND -> ATL
+Aircraft 7,ATL -> DFW -> MCO -> PFN -> ATL
+Aircraft 8,ATL -> DFW -> ORD -> IND -> CVG -> HSV -> ATL
+Aircraft 9,ATL -> DFW -> OMA -> MEM -> BHM -> HSV -> ATL
+Aircraft 10,ATL -> HSV -> DFW -> IAH -> DFW -> HOU -> LIT -> ATL
+Aircraft 11,ATL -> CLT -> BOS -> CLT -> RDU -> CLT -> AGS -> ATL
+Aircraft 12,ATL -> ORD -> EWR -> PIT -> CVG -> LEX -> ATL
+Aircraft 13,ATL -> TPA -> MEM -> CVG -> ROA -> ATL
+Aircraft 14,ATL -> CMH -> CVG -> MEM -> DFW -> BNA -> ATL
+Aircraft 15,ATL -> ORD -> BWI -> DTW -> CLE -> TYS -> ATL
+Aircraft 16,ATL -> BWI -> FLL -> MCO -> TPA -> MCO -> TLH -> ATL
+Aircraft 17,ATL -> ORD -> MSP -> ORD -> MEM -> MGM -> ATL
+Aircraft 18,ATL -> MDW -> CLE -> CVG -> MKE -> CMH -> CVG -> SDF -> ATL
+Aircraft 19,ATL -> BOS -> CLT -> HSV -> BHM -> ATL
